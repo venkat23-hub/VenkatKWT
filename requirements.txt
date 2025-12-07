@@ -1,0 +1,33 @@
+# Flask==3.0.0
+# flask-cors==4.0.0
+# torch==2.1.0
+# torchaudio==2.1.0
+# torchvision==0.16.0
+# librosa==0.10.1
+# numpy==1.24.3
+# scipy==1.11.3
+# soundfile==0.12.1
+# Werkzeug==3.0.1
+# pillow==10.1.0
+# gunicorn==21.2.0
+# einops==0.7.0
+# matplotlib==3.8.2
+# torch>=2.0.0
+# torchaudio
+# librosa
+# numpy
+# gradio>=4.0
+# matplotlib
+# einops
+# huggingface_hub
+
+torch>=2.0.0
+torchaudio>=2.9.0
+torchcodec>=0.1.0
+librosa
+numpy
+gradio>=4.0
+matplotlib
+Pillow
+einops
+streamlit>=1.30

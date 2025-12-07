@@ -1,0 +1,101 @@
+\<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Spotting - IIIT Sricity</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header class="institutional-header">
+        <div class="header-container">
+            <div class="logo-placeholder"><img src="" alt=""></div>
+            <div class="header-text">
+                <h1>Indian Institute of Information Technology, Sricity</h1>
+                <h2>Keyword Spotting System</h2>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="toggle-section">
+            <h3>Audio Input Mode</h3>
+            <div class="toggle-container">
+                <input type="radio" id="upload-mode" name="input-mode" checked>
+                <label for="upload-mode" class="toggle-label">Upload Audio</label>
+                <input type="radio" id="record-mode" name="input-mode">
+                <label for="record-mode" class="toggle-label">Record Audio</label>
+                <div class="toggle-slider"></div>
+            </div>
+        </div>
+
+        <div id="upload-interface" class="interface-section visible">
+            <div class="upload-card">
+                <h3>Upload Audio File</h3>
+                <p class="file-info">WAV, MP3, OGG, WebM, M4A (Max 10MB)</p>
+                <div class="file-input-wrapper">
+                    <input type="file" id="audio-file" accept="audio/*">
+                    <label for="audio-file" class="file-input-label">Choose Audio File</label>
+                </div>
+                <div id="file-info" class="file-info-display" style="display:none;">
+                    <p>Selected: <strong id="file-name"></strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="record-interface" class="interface-section">
+            <div class="record-card">
+                <h3>Record Your Voice</h3>
+                <div class="recording-instructions">
+                    <p class="instruction-text">Click Start and say your keyword clearly</p>
+                </div>
+                <div class="recording-controls">
+                    <button id="start-record" class="record-btn start-btn">Start Recording</button>
+                    <button id="stop-record" class="record-btn stop-btn" style="display:none;">Stop</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button id="predict-btn" class="action-btn predict-btn" disabled>Predict Keyword</button>
+            <button id="reset-btn" class="action-btn reset-btn">Reset</button>
+        </div>
+
+        <div id="results-section" class="results-section" style="display:none;">
+            <h3>Prediction Result</h3>
+            <div class="loading-spinner" id="loading-spinner" style="display:none;">
+                <div class="spinner"></div>
+                <p>Analyzing...</p>
+            </div>
+            <div id="results-content" style="display:none;">
+                <div class="results-container">
+                    <div class="keyword-result">
+                        <h4>Detected Keyword</h4>
+                        <div class="keyword-display">
+                            <span id="predicted-keyword" class="keyword-text">-</span>
+                        </div>
+                    </div>
+                    <div class="confidence-result">
+                        <h4>Confidence</h4>
+                        <div class="confidence-display">
+                            <div class="confidence-bar">
+                                <div id="confidence-fill" class="confidence-fill"></div>
+                            </div>
+                            <span id="confidence-score" class="confidence-score">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="spectrogram-container" class="spectrogram-container" style="display:none;">
+                    <h4>Mel-Spectrogram</h4>
+                    <img id="spectrogram-image" src="" alt="Spectrogram">
+                </div>
+            </div>
+            <div id="error-message" class="error-message" style="display:none;">
+                <span id="error-text"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

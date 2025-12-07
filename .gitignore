@@ -1,0 +1,6 @@
+__pycache__/
+uploads/
+venv/
+best_model.pth
+app_copy.py
+app_copy_2.py
