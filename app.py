@@ -2,10 +2,8 @@ import streamlit as st
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
+import io
 import os
-import base64
-from io import BytesIO
 
 # Your project files (same as Flask)
 from model import KeywordTransformer
@@ -70,10 +68,10 @@ with col1:
         help="Max 10MB"
     )
 
-# === RECORD (Same as Flask + JS recording) ===
+# === RECORD (FIXED: Use st.audio_input — new official widget) ===
 with col2:
     st.markdown("**OR** Record Live")
-    recorded_audio = st.experimental_audio_input("Click and say your keyword")
+    recorded_audio = st.audio_input("Click and say your keyword")  # ← FIXED: st.audio_input
 
 # Get audio path
 audio_path = None
