@@ -22,8 +22,7 @@
 # huggingface_hub
 
 torch>=2.0.0
-torchaudio>=2.9.0
-torchcodec>=0.1.0
+torchaudio>=2.0.0
 librosa
 numpy
 gradio>=4.0
