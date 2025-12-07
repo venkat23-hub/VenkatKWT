@@ -21,12 +21,11 @@
 # einops
 # huggingface_hub
 
+streamlit>=1.30
 torch>=2.0.0
 torchaudio>=2.0.0
 librosa
 numpy
-gradio>=4.0
 matplotlib
 Pillow
 einops
-streamlit>=1.30
