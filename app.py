@@ -59,22 +59,21 @@ preprocessor = AudioPreprocessor(
     fixed_time=101,
     target_duration=1.0
 )
-
 # ========================
-# ULTRA-PREMIUM UI — Navy & Gold Theme
+# ULTRA-PREMIUM UI — Navy & Gold Theme (Final)
 # ========================
 
 st.markdown("""
 <style>
     .main-header {
         background: linear-gradient(135deg, #0f172a, #1e293b);
-        padding: 3.5rem 2rem;
-        border-radius: 20px;
+        padding: 4rem 2rem;
+        border-radius: 24px;
         text-align: center;
         color: white;
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.5);
-        margin-bottom: 3rem;
-        border: 2px solid #fbbf24;
+        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.6);
+        margin-bottom: 3.5rem;
+        border: 3px solid #fbbf24;
         position: relative;
         overflow: hidden;
     }
@@ -82,67 +81,83 @@ st.markdown("""
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(45deg, transparent 30%, rgba(251, 191, 36, 0.1) 50%, transparent 70%);
+        background: radial-gradient(circle at 30% 30%, rgba(251, 191, 36, 0.15), transparent 60%);
         pointer-events: none;
     }
     .main-header h1 {
-        font-size: 48px;
-        font-weight: 800;
-        margin: 0 0 10px 0;
-        letter-spacing: -1.5px;
-        text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        font-size: 52px;
+        font-weight: 900;
+        margin: 0 0 12px 0;
+        letter-spacing: -2px;
+        text-shadow: 0 6px 20px rgba(0,0,0,0.5);
     }
     .main-header h2 {
-        font-size: 28px;
-        font-weight: 500;
-        margin: 0 0 12px 0;
+        font-size: 30px;
+        font-weight: 600;
+        margin: 0 0 15px 0;
         color: #fbbf24;
+        letter-spacing: -0.5px;
     }
     .main-header p {
-        font-size: 19px;
+        font-size: 20px;
         margin: 0;
-        opacity: 0.9;
-        font-weight: 300;
+        opacity: 0.92;
+        font-weight: 400;
+        letter-spacing: 0.5px;
     }
-    .input-card {
-        background: white;
-        padding: 2.5rem 2rem;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        border: 1px solid #e2e8f0;
-        height: 100%;
-        transition: all 0.3s;
+
+    .input-container {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(12px);
+        border-radius: 24px;
+        padding: 3rem 2.5rem;
+        border: 1px solid rgba(251, 191, 36, 0.3);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        transition: all 0.4s;
     }
-    .input-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    .input-container:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+        border-color: #fbbf24;
     }
-    .input-card h4 {
-        color: #0f172a;
+    .input-title {
+        color: #fbbf24;
         text-align: center;
+        font-size: 26px;
+        font-weight: 700;
         margin-bottom: 1.5rem;
-        font-size: 22px;
+        text-shadow: 0 3px 10px rgba(0,0,0,0.4);
     }
+    .input-desc {
+        color: #e2e8f0;
+        text-align: center;
+        font-size: 16px;
+        margin: 1rem 0 2rem;
+        opacity: 0.9;
+    }
+
     .stButton>button {
         background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
         color: #0f172a !important;
         border: none !important;
-        border-radius: 16px !important;
-        height: 60px !important;
-        font-size: 20px !important;
-        font-weight: 700 !important;
-        box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4) !important;
-        transition: all 0.3s !important;
+        border-radius: 18px !important;
+        height: 70px !important;
+        font-size: 22px !important;
+        font-weight: 800 !important;
+        box-shadow: 0 10px 30px rgba(251, 191, 36, 0.5) !important;
+        transition: all 0.4s !important;
         width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
     .stButton>button:hover {
-        transform: translateY(-4px) !important;
-        box-shadow: 0 15px 35px rgba(251, 191, 36, 0.5) !important;
+        transform: translateY(-6px) !important;
+        box-shadow: 0 20px 50px rgba(251, 191, 36, 0.6) !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Header
+# Premium Header
 st.markdown("""
 <div class="main-header">
     <h1>Indian Institute of Information Technology, Sricity</h1>
@@ -151,30 +166,29 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Input Section
-st.markdown("<h3 style='text-align: center; color: #1e293b; margin-bottom: 2.5rem; font-size: 28px;'>Input Audio</h3>", unsafe_allow_html=True)
+# Single Premium Input Section (Exactly like your mockup)
+st.markdown("""
+<h3 style='text-align: center; color: #fbbf24; margin-bottom: 3rem; font-size: 32px; font-weight: 700;'>
+    Input Audio
+</h3>
+""", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2, gap="large")
 
 with col1:
     st.markdown("""
-    <div class="input-card">
-        <h4>Upload Audio File</h4>
+    <div class="input-container">
+        <div class="input-title">Upload Audio File</div>
+        <div class="input-desc">Drag & drop or click to browse<br>WAV, MP3, OGG, WEBM, M4A</div>
     </div>
     """, unsafe_allow_html=True)
-    uploaded_file = st.file_uploader(
-        "",
-        type=['wav', 'mp3', 'ogg', 'webm', 'm4a'],
-        label_visibility="collapsed"
-    )
+    uploaded_file = st.file_uploader("", type=['wav', 'mp3', 'ogg', 'webm', 'm4a'], label_visibility="collapsed")
 
 with col2:
     st.markdown("""
-    <div class="input-card">
-        <h4>Record Live</h4>
-        <p style="text-align:center; color:#64748b; font-size:15px; margin: 1rem 0 1.5rem;">
-            Click the microphone and say your keyword
-        </p>
+    <div class="input-container">
+        <div class="input-title">Record Live</div>
+        <div class="input-desc">Click the microphone and say your keyword</div>
     </div>
     """, unsafe_allow_html=True)
     recorded_audio = st.audio_input("", label_visibility="collapsed")
