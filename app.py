@@ -1,4 +1,4 @@
-# app.py — FINAL WORKING VERSION (Upload + Microphone 100% Fixed)
+# app.py — FINAL WORKING VERSION (No torch.cuda.is_available() crash)
 import streamlit as st
 import torch
 import numpy as np
@@ -12,16 +12,28 @@ from preprocessing import AudioPreprocessor
 from config import label_dict, N_MELS, FIXED_TIME_DIM
 
 # ========================
+# FIXED: Safe Device Detection (No torch.cuda.is_available() crash)
+# ========================
+try:
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
+except:
+    device = torch.device("cpu")  # Fallback if CUDA check fails
+
+st.sidebar.success(f"Using device: {device}")
+
+# ========================
 # Model & Preprocessor
 # ========================
 IDX_TO_LABEL = {v: k for k, v in label_dict.items()}
-device = torch.device("cuda" if torch.cuda_available() else "cpu")
 
 @st.cache_resource
 def load_model():
     model_path = "best_finetuned_from_npy.pth"
     if not os.path.exists(model_path):
-        st.error("Model file not found!")
+        st.error("Model file not found! Please upload best_finetuned_from_npy.pth")
         st.stop()
 
     model = KeywordTransformer(
@@ -81,21 +93,20 @@ with col2:
     recorded_audio = st.audio_input("Click mic and say your keyword")
 
 # ========================
-# FIXED: Handle Both UploadedFile and Bytes Correctly
+# Save Audio Correctly
 # ========================
 audio_path = None
 
 if uploaded_file is not None:
     audio_path = f"temp_upload_{uploaded_file.name}"
     with open(audio_path, "wb") as f:
-        f.write(uploaded_file.getvalue())  # ← CORRECT
+        f.write(uploaded_file.getvalue())
     st.success(f"Uploaded: {uploaded_file.name}")
 
 elif recorded_audio is not None:
     audio_path = "temp_recorded.wav"
-    # ← THIS WAS THE BUG — recorded_audio is an UploadedFile object!
     with open(audio_path, "wb") as f:
-        f.write(recorded_audio.getvalue())  # ← NOW FIXED with .getvalue()
+        f.write(recorded_audio.getvalue())  # ← Fixed!
     st.success("Recording saved!")
 
 # ========================
@@ -140,4 +151,4 @@ else:
     st.info("Upload a file or record your voice to begin.")
 
 st.markdown("---")
-st.caption("Made with love by IIIT Sricity BTP Student")
+st.caption("Made with love by IIIT Sricity BTP Student | Runs on CPU • No Data Sent")
