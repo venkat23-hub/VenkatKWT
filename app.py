@@ -167,8 +167,8 @@ st.markdown(f"""
          class="logo-img" alt="IIIT Sricity">
     <div class="header-text">
         <h1>Indian Institute of Information Technology, Sricity</h1>
-        <h2>Personal Keyword Spotting System</h2>
-        <p>BTP Project • Your Voice • Your Wake Word • 100% Private</p>
+        <h2>Keyword Spotting WebApp</h2>
+        <p>BTP Project</p>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -258,7 +258,7 @@ else:
 st.markdown("---")
 st.markdown(
     "<p style='text-align:center; color:#94a3b8; font-size:15px; margin:2rem 0;'>"
-    "Made with passion by IIIT Sricity BTP Student | Runs on CPU • No Data Sent • 100% Private"
+    "Made by IIIT Sricity BTP Students and logo istaken from wikipedia, Thank you"
     "</p>",
     unsafe_allow_html=True
 )
