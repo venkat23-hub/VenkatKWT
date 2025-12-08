@@ -61,36 +61,102 @@ preprocessor = AudioPreprocessor(
 )
 
 # ========================
-# UI
+# BEAUTIFUL & PROFESSIONAL UI
 # ========================
+
+# Custom CSS for premium look
 st.markdown("""
-<div style="background: linear-gradient(135deg, #0052A3, #003d7a);
-            color: white; padding: 40px; text-align: center;
-            border-radius: 16px; margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0,82,163,0.4);">
-    <h1 style="margin:0; font-size:40px; font-weight:700;">Indian Institute of information technology, Sricity</h1>
-    <h2 style="margin:15px 0 0; opacity:0.95; font-size:22px;">
-        Keyword Spotting Web app
-    </h2>
-    <p style="margin:10px 0 0; font-size:17px; opacity:0.9;">
-        BTP project
-    </p>
+<style>
+    .main-header {
+        background: linear-gradient(135deg, #0052A3, #003d7a);
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 15px 40px rgba(0, 82, 163, 0.4);
+        margin-bottom: 2.5rem;
+        border: 3px solid rgba(255,255,255,0.1);
+    }
+    .main-header h1 {
+        font-size: 46px;
+        font-weight: 800;
+        margin: 0 0 12px 0;
+        letter-spacing: -1px;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .main-header h2 {
+        font-size: 26px;
+        font-weight: 500;
+        margin: 0 0 10px 0;
+        opacity: 0.95;
+    }
+    .main-header p {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 16px;
+    }
+    .input-box {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border: 1px solid #e0e0e0;
+        height: 100%;
+    }
+    .stButton>button {
+        background: linear-gradient(135deg, #0052A3, #003d7a) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        height: 56px !important;
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 6px 20px rgba(0,82,163,0.3) !important;
+        transition: all 0.3s !important;
+    }
+    .stButton>button:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 10px 30px rgba(0,82,163,0.4) !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Header
+st.markdown("""
+<div class="main-header">
+    <h1>Indian Institute of Information Technology, Sricity</h1>
+    <h2>Personal Keyword Spotting System</h2>
+    <p>BTP Project • Your Voice-Powered Wake Word Detector</p>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("### Input Audio")
+# Input Section
+st.markdown("<h3 style='text-align: center; color: #333; margin-bottom: 2rem;'>Input Audio</h3>", unsafe_allow_html=True)
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns(2, gap="large")
 
 with col1:
+    st.markdown("""
+    <div class="input-box">
+        <h4 style="text-align:center; color:#0052A3; margin-top:0;">Upload Audio File</h4>
+    </div>
+    """, unsafe_allow_html=True)
     uploaded_file = st.file_uploader(
-        "Upload Audio File",
-        type=['wav', 'mp3', 'ogg', 'webm', 'm4a']
+        "",  # Empty label for clean look
+        type=['wav', 'mp3', 'ogg', 'webm', 'm4a'],
+        label_visibility="collapsed"
     )
 
 with col2:
-    st.markdown("**OR** Record Live")
-    recorded_audio = st.audio_input("Click mic and say your keyword")
+    st.markdown("""
+    <div class="input-box">
+        <h4 style="text-align:center; color:#0052A3; margin-top:0;">Record Live</h4>
+        <p style="text-align:center; color:#666; font-size:14px; margin-bottom:20px;">
+            Click the mic and say your keyword
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    recorded_audio = st.audio_input("", label_visibility="collapsed")
 
 # ========================
 # Save Audio Correctly
