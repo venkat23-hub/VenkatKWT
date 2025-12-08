@@ -188,8 +188,8 @@ st.markdown(f"""
          class="logo-img" alt="IIIT Sricity">
     <div class="header-text">
         <h1>Indian Institute of Information Technology, Sricity</h1>
-        <h2>Personal Keyword Spotting System</h2>
-        <p>BTP Project • Your Voice • Your Wake Word • 100% Private</p>
+        <h2> Keyword Spotting System</h2>
+        <p>   BTP Project</p>
     </div>
 </div>
 """, unsafe_allow_html=True)
