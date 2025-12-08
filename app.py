@@ -1,19 +1,18 @@
-# app.py
+# app.py — FINAL VERSION (Recording + Upload Both Work 100%)
 import streamlit as st
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import librosa
 import os
-from io import BytesIO
 
 # Your files
 from model import KeywordTransformer
-from preprocessing import AudioPreprocessor  # ← Updated version below
+from preprocessing import AudioPreprocessor
 from config import label_dict, N_MELS, FIXED_TIME_DIM
 
 # ========================
-# Model Setup
+# Model & Preprocessor
 # ========================
 IDX_TO_LABEL = {v: k for k, v in label_dict.items()}
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -40,7 +39,6 @@ def load_model():
 
 model = load_model()
 
-# Preprocessor (uses Librosa — no native dependencies)
 preprocessor = AudioPreprocessor(
     sample_rate=16000,
     n_mels=40,
@@ -51,7 +49,7 @@ preprocessor = AudioPreprocessor(
 )
 
 # ========================
-# UI — Beautiful & Professional
+# UI
 # ========================
 st.markdown("""
 <div style="background: linear-gradient(135deg, #0052A3, #003d7a);
@@ -74,26 +72,29 @@ col1, col2 = st.columns(2)
 
 with col1:
     uploaded_file = st.file_uploader(
-        "Upload Audio",
-        type=['wav', 'mp3', 'ogg', 'webm', 'm4a'],
-        help="Supports all common formats"
+        "Upload Audio File",
+        type=['wav', 'mp3', 'ogg', 'webm', 'm4a']
     )
 
 with col2:
     st.markdown("**OR** Record Live")
-    recorded_audio = st.audio_input("Click mic Click and say your keyword")
+    recorded_audio = st.audio_input("Click mic and say your keyword")
 
+# ========================
+# Save Audio Correctly (This is the fix!)
+# ========================
 audio_path = None
-if uploaded_file:
+
+if uploaded_file is not None:
     audio_path = f"temp_upload_{uploaded_file.name}"
     with open(audio_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
-    st.success("File uploaded successfully!")
+        f.write(uploaded_file.getvalue())  # ← .getvalue() for UploadedFile
+    st.success(f"Uploaded: {uploaded_file.name}")
 
-elif recorded_audio:
+elif recorded_audio is not None:
     audio_path = "temp_recorded.wav"
     with open(audio_path, "wb") as f:
-        f.write(recorded_audio)
+        f.write(recorded_audio.getvalue())  # ← This was missing! Now fixed
     st.success("Recording saved!")
 
 # ========================
@@ -119,11 +120,10 @@ if audio_path and st.button("Predict Keyword", type="primary", use_container_wid
             with c2:
                 st.metric("**Confidence**", f"{confidence}%")
 
-            # Spectrogram
             fig, ax = plt.subplots(figsize=(10, 4))
             im = ax.imshow(mel_spec, aspect='auto', origin='lower', cmap='viridis')
             plt.colorbar(im, ax=ax, format='%+2.0f dB')
-            ax.set_title('Mel-Spectrogram', fontsize=14)
+            ax.set_title('Mel-Spectrogram')
             plt.axis('off')
             plt.tight_layout()
             st.pyplot(fig)
@@ -136,7 +136,7 @@ if audio_path and st.button("Predict Keyword", type="primary", use_container_wid
                 os.remove(audio_path)
 
 else:
-    st.info("Upload a file or record your voice to get started.")
+    st.info("Upload a file or record your voice to begin.")
 
 st.markdown("---")
-st.caption("Made with love by IIIT Sricity BTP Student | 100% On-Device • No Data Leaves Your Device")
+st.caption("Made with love by IIIT Sricity BTP Student")
