@@ -68,12 +68,12 @@ st.markdown("""
             color: white; padding: 40px; text-align: center;
             border-radius: 16px; margin-bottom: 30px;
             box-shadow: 0 10px 40px rgba(0,82,163,0.4);">
-    <h1 style="margin:0; font-size:40px; font-weight:700;">IIIT Sricity</h1>
+    <h1 style="margin:0; font-size:40px; font-weight:700;">Indian Institute of information technology, Sricity</h1>
     <h2 style="margin:15px 0 0; opacity:0.95; font-size:22px;">
-        Personal Keyword Spotting System
+        Keyword Spotting Web app
     </h2>
     <p style="margin:10px 0 0; font-size:17px; opacity:0.9;">
-        Your Voice • Your Wake Word • 100% Private
+        BTP project
     </p>
 </div>
 """, unsafe_allow_html=True)
