@@ -163,7 +163,7 @@ st.markdown("""
 # HEADER WITH LOGO
 st.markdown(f"""
 <div class="main-header">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/IIIT_Sri_City_Logo.png" 
+    <img src="https://upload.wikimedia.org/wikipedia/en/4/49/IIIT_Sri_City_Logo.png" 
          class="logo-img" alt="IIIT Sricity">
     <div class="header-text">
         <h1>Indian Institute of Information Technology, Sricity</h1>
