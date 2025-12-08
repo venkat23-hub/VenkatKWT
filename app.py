@@ -162,7 +162,7 @@ st.markdown("""
 <div class="main-header">
     <h1>Indian Institute of Information Technology, Sricity</h1>
     <h2>Personal Keyword Spotting System</h2>
-    <p>BTP Project • Your Voice • Your Wake Word • 100% Private</p>
+    <p>BTP Project</p>
 </div>
 """, unsafe_allow_html=True)
 
