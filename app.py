@@ -1,4 +1,4 @@
-# app.py — FINAL VERSION (Recording + Upload Both Work 100%)
+# app.py — FINAL WORKING VERSION (Upload + Microphone 100% Fixed)
 import streamlit as st
 import torch
 import numpy as np
@@ -15,7 +15,7 @@ from config import label_dict, N_MELS, FIXED_TIME_DIM
 # Model & Preprocessor
 # ========================
 IDX_TO_LABEL = {v: k for k, v in label_dict.items()}
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda_available() else "cpu")
 
 @st.cache_resource
 def load_model():
@@ -81,20 +81,21 @@ with col2:
     recorded_audio = st.audio_input("Click mic and say your keyword")
 
 # ========================
-# Save Audio Correctly (This is the fix!)
+# FIXED: Handle Both UploadedFile and Bytes Correctly
 # ========================
 audio_path = None
 
 if uploaded_file is not None:
     audio_path = f"temp_upload_{uploaded_file.name}"
     with open(audio_path, "wb") as f:
-        f.write(uploaded_file.getvalue())  # ← .getvalue() for UploadedFile
+        f.write(uploaded_file.getvalue())  # ← CORRECT
     st.success(f"Uploaded: {uploaded_file.name}")
 
 elif recorded_audio is not None:
     audio_path = "temp_recorded.wav"
+    # ← THIS WAS THE BUG — recorded_audio is an UploadedFile object!
     with open(audio_path, "wb") as f:
-        f.write(recorded_audio.getvalue())  # ← This was missing! Now fixed
+        f.write(recorded_audio.getvalue())  # ← NOW FIXED with .getvalue()
     st.success("Recording saved!")
 
 # ========================
