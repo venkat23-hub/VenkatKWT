@@ -61,62 +61,83 @@ preprocessor = AudioPreprocessor(
 )
 
 # ========================
-# BEAUTIFUL & PROFESSIONAL UI
+# ULTRA-PREMIUM UI — Navy & Gold Theme
 # ========================
 
-# Custom CSS for premium look
 st.markdown("""
 <style>
     .main-header {
-        background: linear-gradient(135deg, #0052A3, #003d7a);
-        padding: 3rem 2rem;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        padding: 3.5rem 2rem;
         border-radius: 20px;
         text-align: center;
         color: white;
-        box-shadow: 0 15px 40px rgba(0, 82, 163, 0.4);
-        margin-bottom: 2.5rem;
-        border: 3px solid rgba(255,255,255,0.1);
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.5);
+        margin-bottom: 3rem;
+        border: 2px solid #fbbf24;
+        position: relative;
+        overflow: hidden;
+    }
+    .main-header::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(45deg, transparent 30%, rgba(251, 191, 36, 0.1) 50%, transparent 70%);
+        pointer-events: none;
     }
     .main-header h1 {
-        font-size: 46px;
+        font-size: 48px;
         font-weight: 800;
-        margin: 0 0 12px 0;
-        letter-spacing: -1px;
-        text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        margin: 0 0 10px 0;
+        letter-spacing: -1.5px;
+        text-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
     .main-header h2 {
-        font-size: 26px;
+        font-size: 28px;
         font-weight: 500;
-        margin: 0 0 10px 0;
-        opacity: 0.95;
+        margin: 0 0 12px 0;
+        color: #fbbf24;
     }
     .main-header p {
-        background: #f8f9fa;
-        padding: 2rem;
-        border-radius: 16px;
+        font-size: 19px;
+        margin: 0;
+        opacity: 0.9;
+        font-weight: 300;
     }
-    .input-box {
+    .input-card {
         background: white;
-        padding: 2rem;
-        border-radius: 16px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        border: 1px solid #e0e0e0;
+        padding: 2.5rem 2rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border: 1px solid #e2e8f0;
         height: 100%;
+        transition: all 0.3s;
+    }
+    .input-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    .input-card h4 {
+        color: #0f172a;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 22px;
     }
     .stButton>button {
-        background: linear-gradient(135deg, #0052A3, #003d7a) !important;
-        color: white !important;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+        color: #0f172a !important;
         border: none !important;
-        border-radius: 12px !important;
-        height: 56px !important;
-        font-size: 18px !important;
-        font-weight: 600 !important;
-        box-shadow: 0 6px 20px rgba(0,82,163,0.3) !important;
+        border-radius: 16px !important;
+        height: 60px !important;
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4) !important;
         transition: all 0.3s !important;
+        width: 100%;
     }
     .stButton>button:hover {
-        transform: translateY(-3px) !important;
-        box-shadow: 0 10px 30px rgba(0,82,163,0.4) !important;
+        transform: translateY(-4px) !important;
+        box-shadow: 0 15px 35px rgba(251, 191, 36, 0.5) !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -126,38 +147,37 @@ st.markdown("""
 <div class="main-header">
     <h1>Indian Institute of Information Technology, Sricity</h1>
     <h2>Personal Keyword Spotting System</h2>
-    <p>BTP Project • Your Voice-Powered Wake Word Detector</p>
+    <p>BTP Project • Your Voice • Your Wake Word • 100% Private</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Input Section
-st.markdown("<h3 style='text-align: center; color: #333; margin-bottom: 2rem;'>Input Audio</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: #1e293b; margin-bottom: 2.5rem; font-size: 28px;'>Input Audio</h3>", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2, gap="large")
 
 with col1:
     st.markdown("""
-    <div class="input-box">
-        <h4 style="text-align:center; color:#0052A3; margin-top:0;">Upload Audio File</h4>
+    <div class="input-card">
+        <h4>Upload Audio File</h4>
     </div>
     """, unsafe_allow_html=True)
     uploaded_file = st.file_uploader(
-        "",  # Empty label for clean look
+        "",
         type=['wav', 'mp3', 'ogg', 'webm', 'm4a'],
         label_visibility="collapsed"
     )
 
 with col2:
     st.markdown("""
-    <div class="input-box">
-        <h4 style="text-align:center; color:#0052A3; margin-top:0;">Record Live</h4>
-        <p style="text-align:center; color:#666; font-size:14px; margin-bottom:20px;">
-            Click the mic and say your keyword
+    <div class="input-card">
+        <h4>Record Live</h4>
+        <p style="text-align:center; color:#64748b; font-size:15px; margin: 1rem 0 1.5rem;">
+            Click the microphone and say your keyword
         </p>
     </div>
     """, unsafe_allow_html=True)
     recorded_audio = st.audio_input("", label_visibility="collapsed")
-
 # ========================
 # Save Audio Correctly
 # ========================
