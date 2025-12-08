@@ -1,4 +1,4 @@
-# app.py — FINAL WORKING VERSION (No torch.cuda.is_available() crash)
+# app.py — FINAL PREMIUM VERSION (Deploy & Impress Everyone!)
 import streamlit as st
 import torch
 import numpy as np
@@ -6,23 +6,18 @@ import matplotlib.pyplot as plt
 import librosa
 import os
 
-# Your files
+# Your project files
 from model import KeywordTransformer
 from preprocessing import AudioPreprocessor
 from config import label_dict, N_MELS, FIXED_TIME_DIM
 
 # ========================
-# FIXED: Safe Device Detection (No torch.cuda.is_available() crash)
+# Safe Device (No CUDA crash)
 # ========================
 try:
-    if torch.cuda.is_available():
-        device = torch.device("cuda")
-    else:
-        device = torch.device("cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 except:
-    device = torch.device("cpu")  # Fallback if CUDA check fails
-
-st.sidebar.success(f"Using device: {device}")
+    device = torch.device("cpu")
 
 # ========================
 # Model & Preprocessor
@@ -59,73 +54,117 @@ preprocessor = AudioPreprocessor(
     fixed_time=101,
     target_duration=1.0
 )
-# ========================
-# ULTRA-PREMIUM HEADER WITH IIIT SRICITY LOGO (Left Side)
-# ========================
 
-# Replace this block in your app.py
+# ========================
+# ULTRA-PREMIUM UI — Navy & Gold with IIIT Sricity Logo
+# ========================
+st.set_page_config(page_title="IIIT Sricity • Keyword Spotting", page_icon="microphone", layout="centered")
+
 st.markdown("""
 <style>
-    .logo-header {
+    .main-header {
         background: linear-gradient(135deg, #0f172a, #1e293b);
-        padding: 2.5rem 3rem;
-        border-radius: 24px;
-        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.6);
+        padding: 2.8rem 3.5rem;
+        border-radius: 28px;
+        box-shadow: 0 25px 70px rgba(15, 23, 42, 0.7);
         margin-bottom: 3.5rem;
         border: 3px solid #fbbf24;
         position: relative;
         overflow: hidden;
         display: flex;
         align-items: center;
-        gap: 2rem;
+        gap: 2.5rem;
     }
-    .logo-header::before {
+    .main-header::before {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: radial-gradient(circle at 20% 50%, rgba(251, 191, 36, 0.15), transparent 70%);
+        background: radial-gradient(circle at 15% 50%, rgba(251, 191, 36, 0.2), transparent 70%);
         pointer-events: none;
     }
     .logo-img {
-        width: 120px;
-        height: 120px;
-        border-radius: 16px;
-        border: 3px solid #fbbf24;
-        box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+        width: 130px;
+        height: 130px;
+        border-radius: 20px;
+        border: 4px solid #fbbf24;
+        box-shadow: 0 10px 30px rgba(251, 191, 36, 0.5);
         object-fit: contain;
         background: white;
-        padding: 8px;
+        padding: 10px;
     }
     .header-text h1 {
-        font-size: 44px;
+        font-size: 48px;
         font-weight: 900;
-        margin: 0 0 8px 0;
-        letter-spacing: -1.8px;
+        margin: 0 0 10px 0;
+        letter-spacing: -2px;
         color: white;
         text-shadow: 0 6px 20px rgba(0,0,0,0.5);
     }
     .header-text h2 {
-        font-size: 28px;
+        font-size: 30px;
         font-weight: 600;
-        margin: 0 0 10px 0;
+        margin: 0 0 12px 0;
         color: #fbbf24;
     }
     .header-text p {
-        font-size: 19px;
+        font-size: 20px;
         margin: 0;
         color: #e2e8f0;
         opacity: 0.95;
         font-weight: 400;
     }
+    .input-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border-radius: 28px;
+        padding: 3rem 2.5rem;
+        border: 1px solid rgba(251, 191, 36, 0.4);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        transition: all 0.4s;
+        text-align: center;
+    }
+    .input-container:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 30px 70px rgba(251, 191, 36, 0.3);
+        border-color: #fbbf24;
+    }
+    .input-title {
+        color: #fbbf24;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    .input-desc {
+        color: #cbd5e1;
+        font-size: 16px;
+        margin: 1rem 0 2rem;
+    }
+    .stButton>button {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+        color: #0f172a !important;
+        border: none !important;
+        border-radius: 20px !important;
+        height: 70px !important;
+        font-size: 22px !important;
+        font-weight: 800 !important;
+        box-shadow: 0 10px 35px rgba(251, 191, 36, 0.5) !important;
+        transition: all 0.4s !important;
+        width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+    .stButton>button:hover {
+        transform: translateY(-6px) !important;
+        box-shadow: 0 20px 50px rgba(251, 191, 36, 0.7) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# === HEADER WITH LOGO (Left Side) ===
+# HEADER WITH LOGO
 st.markdown(f"""
-<div class="logo-header">
-    <img src="https://upload.wikimedia.org/wikipedia/en/4/49/IIIT_Sri_City_Logo.png" 
-         class="logo-img" 
-         alt="IIIT Sricity Logo">
+<div class="main-header">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/IIIT_Sri_City_Logo.png" 
+         class="logo-img" alt="IIIT Sricity">
     <div class="header-text">
         <h1>Indian Institute of Information Technology, Sricity</h1>
         <h2>Personal Keyword Spotting System</h2>
@@ -133,8 +172,32 @@ st.markdown(f"""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+# Input Section
+st.markdown("<h3 style='text-align: center; color: #fbbf24; margin: 3rem 0 2rem; font-size: 34px; font-weight: 700;'>Input Audio</h3>", unsafe_allow_html=True)
+
+col1, col2 = st.columns(2, gap="large")
+
+with col1:
+    st.markdown("""
+    <div class="input-container">
+        <div class="input-title">Upload Audio File</div>
+        <div class="input-desc">Supported: WAV, MP3, OGG, WEBM, M4A</div>
+    </div>
+    """, unsafe_allow_html=True)
+    uploaded_file = st.file_uploader("", type=['wav', 'mp3', 'ogg', 'webm', 'm4a'], label_visibility="collapsed")
+
+with col2:
+    st.markdown("""
+    <div class="input-container">
+        <div class="input-title">Record Live</div>
+        <div class="input-desc">Click the mic and say your keyword</div>
+    </div>
+    """, unsafe_allow_html=True)
+    recorded_audio = st.audio_input("", label_visibility="collapsed")
+
 # ========================
-# Save Audio Correctly
+# Save Audio
 # ========================
 audio_path = None
 
@@ -142,12 +205,12 @@ if uploaded_file is not None:
     audio_path = f"temp_upload_{uploaded_file.name}"
     with open(audio_path, "wb") as f:
         f.write(uploaded_file.getvalue())
-    st.success(f"Uploaded: {uploaded_file.name}")
+    st.success("File uploaded successfully!")
 
 elif recorded_audio is not None:
     audio_path = "temp_recorded.wav"
     with open(audio_path, "wb") as f:
-        f.write(recorded_audio.getvalue())  # ← Fixed!
+        f.write(recorded_audio.getvalue())
     st.success("Recording saved!")
 
 # ========================
@@ -191,5 +254,11 @@ if audio_path and st.button("Predict Keyword", type="primary", use_container_wid
 else:
     st.info("Upload a file or record your voice to begin.")
 
+# Footer
 st.markdown("---")
-st.caption("Made with love by IIIT Sricity BTP Student | Runs on CPU • No Data Sent")
+st.markdown(
+    "<p style='text-align:center; color:#94a3b8; font-size:15px; margin:2rem 0;'>"
+    "Made with passion by IIIT Sricity BTP Student | Runs on CPU • No Data Sent • 100% Private"
+    "</p>",
+    unsafe_allow_html=True
+)
