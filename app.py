@@ -1,26 +1,28 @@
+# app.py
 import streamlit as st
 import torch
-import torchaudio  # Import only — no set_backend needed (deprecated)
 import numpy as np
 import matplotlib.pyplot as plt
-import io
+import librosa
 import os
+from io import BytesIO
 
-# Your project files (same as Flask)
+# Your files
 from model import KeywordTransformer
-from preprocessing import AudioPreprocessor
+from preprocessing import AudioPreprocessor  # ← Updated version below
 from config import label_dict, N_MELS, FIXED_TIME_DIM
 
-# === SAME AS FLASK ===
+# ========================
+# Model Setup
+# ========================
 IDX_TO_LABEL = {v: k for k, v in label_dict.items()}
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Load model & preprocessor (cached like Flask global)
 @st.cache_resource
-def load_model_and_preprocessor():
+def load_model():
     model_path = "best_finetuned_from_npy.pth"
     if not os.path.exists(model_path):
-        st.error(f"Model not found: {model_path}")
+        st.error("Model file not found!")
         st.stop()
 
     model = KeywordTransformer(
@@ -34,99 +36,107 @@ def load_model_and_preprocessor():
     state_dict = checkpoint.get("model_state", checkpoint)
     model.load_state_dict(state_dict)
     model.eval()
+    return model
 
-    preprocessor = AudioPreprocessor(
-        sample_rate=16000, n_mels=40, n_fft=400,
-        hop_length=160, fixed_time=101, target_duration=1.0
-    )
+model = load_model()
 
-    return model, preprocessor
+# Preprocessor (uses Librosa — no native dependencies)
+preprocessor = AudioPreprocessor(
+    sample_rate=16000,
+    n_mels=40,
+    n_fft=400,
+    hop_length=160,
+    fixed_time=101,
+    target_duration=1.0
+)
 
-model, preprocessor = load_model_and_preprocessor()
-
-# === BEAUTIFUL TITLE (Same as Flask) ===
+# ========================
+# UI — Beautiful & Professional
+# ========================
 st.markdown("""
-<div style="background: linear-gradient(135deg, #0052A3, #003d7a); 
-            color: white; padding: 35px; text-align: center; 
-            border-radius: 16px; margin-bottom: 30px; 
-            box-shadow: 0 8px 32px rgba(0,82,163,0.3);">
-    <h1 style="margin:0; font-size:36px; font-weight:700;">IIIT Sricity</h1>
-    <h2 style="margin:12px 0 0; opacity:0.95; font-size:20px;">
-        Personal Keyword Spotting System • Your Voice, Your Wake Word
+<div style="background: linear-gradient(135deg, #0052A3, #003d7a);
+            color: white; padding: 40px; text-align: center;
+            border-radius: 16px; margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,82,163,0.4);">
+    <h1 style="margin:0; font-size:40px; font-weight:700;">IIIT Sricity</h1>
+    <h2 style="margin:15px 0 0; opacity:0.95; font-size:22px;">
+        Personal Keyword Spotting System
     </h2>
+    <p style="margin:10px 0 0; font-size:17px; opacity:0.9;">
+        Your Voice • Your Wake Word • 100% Private
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("### Choose Input Method")
+st.markdown("### Input Audio")
 
 col1, col2 = st.columns(2)
 
-# === UPLOAD (Same as Flask /upload route) ===
 with col1:
     uploaded_file = st.file_uploader(
-        "Upload Audio File",
+        "Upload Audio",
         type=['wav', 'mp3', 'ogg', 'webm', 'm4a'],
-        help="Max 10MB"
+        help="Supports all common formats"
     )
 
-# === RECORD (st.audio_input — official, no errors) ===
 with col2:
     st.markdown("**OR** Record Live")
-    recorded_audio = st.audio_input("Click and say your keyword")
+    recorded_audio = st.audio_input("Click mic Click and say your keyword")
 
-# Get audio path
 audio_path = None
 if uploaded_file:
     audio_path = f"temp_upload_{uploaded_file.name}"
     with open(audio_path, "wb") as f:
         f.write(uploaded_file.getbuffer())
+    st.success("File uploaded successfully!")
+
 elif recorded_audio:
     audio_path = "temp_recorded.wav"
     with open(audio_path, "wb") as f:
         f.write(recorded_audio)
+    st.success("Recording saved!")
 
-# === PREDICT BUTTON (Same as Flask /predict) ===
-if audio_path:
-    if st.button("Predict Keyword", type="primary", use_container_width=True):
-        with st.spinner("Processing audio..."):
-            try:
-                # SAME preprocessing as Flask (uses default dispatcher backend)
-                tensor, mel_spec = preprocessor.preprocess(audio_path)
-                tensor = tensor.to(device)
+# ========================
+# Predict
+# ========================
+if audio_path and st.button("Predict Keyword", type="primary", use_container_width=True):
+    with st.spinner("Analyzing your voice..."):
+        try:
+            tensor, mel_spec = preprocessor.preprocess(audio_path)
+            tensor = tensor.to(device)
 
-                with torch.no_grad():
-                    output = model(tensor)
-                    probs = torch.softmax(output, dim=1)
-                    conf, idx = torch.max(probs, dim=1)
-                    keyword = IDX_TO_LABEL[idx.item()]
-                    confidence = round(conf.item() * 100, 2)
+            with torch.no_grad():
+                output = model(tensor)
+                probs = torch.softmax(output, dim=1)
+                conf, idx = torch.max(probs, dim=1)
+                keyword = IDX_TO_LABEL[idx.item()]
+                confidence = round(conf.item() * 100, 2)
 
-                # SUCCESS RESULT
-                st.success("**Prediction Complete!**")
-                colA, colB = st.columns(2)
-                with colA:
-                    st.metric("Detected Keyword", keyword.upper())
-                with colB:
-                    st.metric("Confidence", f"{confidence}%")
+            st.success("**Prediction Complete!**")
+            c1, c2 = st.columns(2)
+            with c1:
+                st.metric("**Detected Keyword**", keyword.upper())
+            with c2:
+                st.metric("**Confidence**", f"{confidence}%")
 
-                # SPECTROGRAM (Same as Flask)
-                fig, ax = plt.subplots(figsize=(10, 4))
-                img = ax.imshow(mel_spec, aspect='auto', origin='lower', cmap='viridis')
-                plt.colorbar(img, ax=ax, format='%+2.0f dB')
-                plt.title('Mel-Spectrogram')
-                plt.tight_layout()
-                st.pyplot(fig)
-                plt.close(fig)
+            # Spectrogram
+            fig, ax = plt.subplots(figsize=(10, 4))
+            im = ax.imshow(mel_spec, aspect='auto', origin='lower', cmap='viridis')
+            plt.colorbar(im, ax=ax, format='%+2.0f dB')
+            ax.set_title('Mel-Spectrogram', fontsize=14)
+            plt.axis('off')
+            plt.tight_layout()
+            st.pyplot(fig)
+            plt.close()
 
-            except Exception as e:
-                st.error(f"Error: {str(e)}")
-            finally:
-                if os.path.exists(audio_path):
-                    os.remove(audio_path)
+        except Exception as e:
+            st.error(f"Error: {e}")
+        finally:
+            if os.path.exists(audio_path):
+                os.remove(audio_path)
 
 else:
-    st.info("Please upload an audio file or record your voice to predict.")
+    st.info("Upload a file or record your voice to get started.")
 
-# Footer
 st.markdown("---")
-st.markdown("**Your personal wake word detector** • Trained only on your voice • 100% private")
+st.caption("Made with love by IIIT Sricity BTP Student | 100% On-Device • No Data Leaves Your Device")
