@@ -184,7 +184,7 @@ st.markdown("""
 # Header with Logo (Responsive)
 st.markdown(f"""
 <div class="main-header">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/IIIT_Sri_City_Logo.png" 
+    <img src="https://upload.wikimedia.org/wikipedia/en/4/49/IIIT_Sri_City_Logo.png" 
          class="logo-img" alt="IIIT Sricity">
     <div class="header-text">
         <h1>Indian Institute of Information Technology, Sricity</h1>
@@ -269,4 +269,4 @@ else:
     st.info("Upload or record audio to begin")
 
 st.markdown("---")
-st.caption("Made with passion by IIIT Sricity BTP Student • 100% Private • No Data Sent")
+st.caption("Made by IIIT Sricity BTP Students and logo is taken from wikipedia, Thank you")
